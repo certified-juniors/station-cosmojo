@@ -4,7 +4,7 @@ class Robot {
   constructor() {
     this.coordinates = findFirstCoordinate(); // [x, y, z]
     this.mode = 'ручной'; // автоматический, ручной
-    this.direction = 'север'; // север +y, юг -y, восток +x, запад -x
+    this.direction = 'север'; // север +z, юг -z, восток +x, запад -x
     this.health = 10000;
     this.criticalError = false;
     this.criticalErrorInterval = null;
@@ -40,15 +40,15 @@ class Robot {
   }
 
   move(direction, steps) {
-    const current_z = this.coordinates[2];
+    const current_z = this.coordinates[1];
     let future_coordinates = [...this.coordinates];
 
     switch (direction) {
       case 'север':
-        future_coordinates[1] += steps;
+        future_coordinates[2] += steps;
         break;
       case 'юг':
-        future_coordinates[1] -= steps;
+        future_coordinates[2] -= steps;
         break;
       case 'восток':
         future_coordinates[0] += steps;
@@ -62,25 +62,29 @@ class Robot {
       return;
     }
 
-    if (future_coordinates[1] < 0 || future_coordinates[1] >= map[0].length) {
+    if (future_coordinates[2] < 0 || future_coordinates[2] >= map[0][0].length) {
       return;
     }
 
-    if (map[future_coordinates[0]][future_coordinates[1]][future_coordinates[2]] !== 'воздух') {
-      future_coordinates[2] = current_z + 1;
-      if (map[future_coordinates[0]][future_coordinates[1]][future_coordinates[2]] !== 'воздух') {
+    if (map[future_coordinates[0]][future_coordinates[2]][future_coordinates[1]] !== 'воздух') {
+      future_coordinates[1] = current_z + 1;
+      if (map[future_coordinates[0]][future_coordinates[2]][future_coordinates[1]] !== 'воздух') {
         return;
       }
     } 
 
     // ищем землю
-    while (future_coordinates[2] >= 0 && map[future_coordinates[0]][future_coordinates[1]][future_coordinates[2]] === 'воздух') {
-      future_coordinates[2]--;
+    while (future_coordinates[1] >= 0 && map[future_coordinates[0]][future_coordinates[2]][future_coordinates[1]] === 'воздух') {
+      future_coordinates[1]--;
     }
-    future_coordinates[2]++;
+    future_coordinates[1]++;
 
-    if (current_z - future_coordinates[2] > 3) {
-      const delta = current_z - future_coordinates[2];
+    if (future_coordinates[1] === 0) {
+      return;
+    }
+
+    if (current_z - future_coordinates[1] > 3) {
+      const delta = current_z - future_coordinates[1];
       this.health -= delta * 100;
     }
 
@@ -136,9 +140,9 @@ class Robot {
           this.direction = 'восток';
         } else if (x < this.coordinates[0]) {
           this.direction = 'запад';
-        } else if (y > this.coordinates[1]) {
+        } else if (y > this.coordinates[2]) {
           this.direction = 'север';
-        } else if (y < this.coordinates[1]) {
+        } else if (y < this.coordinates[2]) {
           this.direction = 'юг';
         }
         this.moveForward();
@@ -159,7 +163,7 @@ class Robot {
               continue;
             }
             nearLocations.push({
-              coordinates: [i, j, k],
+              coordinates: [i, k, j],
               location: map[i][j][k],
             });
           }
@@ -170,7 +174,7 @@ class Robot {
   }
 
   getCurrentLocation() {
-    return map[this.coordinates[0]][this.coordinates[1]][this.coordinates[2] - 1]
+    return map[this.coordinates[0]][this.coordinates[2]][this.coordinates[1] - 1]
   }
 
   heal() {

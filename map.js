@@ -8,10 +8,10 @@ const height = 128;
 const depth = 128;
 
 const thresholds = {
-  air: 0.2,
-  soil: 0.4,
-  acid: 0.6,
-  sand: 0.7,
+  air: 0.1,
+  soil: 0.2,
+  acid: 0.3,
+  sand: 0.35,
   water: 1.0,
 };
 
@@ -51,7 +51,7 @@ function findFirstCoordinate() {
     return findFirstCoordinate();
   }
   console.log("Coordinates: ", x, y, z);
-  return [x, y, z+1]
+  return [x, z+1, y]
 }
 
 module.exports = { map, findFirstCoordinate };

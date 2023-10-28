@@ -33,10 +33,12 @@ io.on('connection', (socket) => {
             socket.emit('criticalError');
         }
 
-        // с шансом 10% он чинит критическую ошибку
-        if (Math.random() < 0.1) {
-            robot.fixCriticalError();
-            socket.emit('fixCriticalError');
+        if (robot.criticalError) {
+            // с шансом 3% он чинит критическую ошибку
+            if (Math.random() < 0.03) {
+                robot.fixCriticalError();
+                socket.emit('fixCriticalError');
+            }
         }
 
         if (state.health <= 0) {
