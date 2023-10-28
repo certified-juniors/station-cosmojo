@@ -19,10 +19,11 @@ app.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));
 });
 
+const robot = new Robot();
+
 io.on('connection', (socket) => {
     console.log('a user connected');
     
-    const robot = new Robot();
     const interval = setInterval(() => {
         const state = robot.getState();
         socket.emit('state', state);
