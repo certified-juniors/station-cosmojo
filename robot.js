@@ -168,7 +168,7 @@ class Robot {
   }
 
   getNearLocation(radius) {
-    const [x, y, z] = this.coordinates;
+    const [x, z, y] = this.coordinates;
     const nearLocations = [];
     for (let i = x - radius; i <= x + radius; i++) {
       for (let j = y - radius; j <= y + radius; j++) {
