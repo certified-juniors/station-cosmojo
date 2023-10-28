@@ -87,8 +87,27 @@ class Robot {
       const delta = current_z - future_coordinates[1];
       this.health -= delta * 100;
     }
-
-    this.coordinates = future_coordinates;
+    
+    // В зависимости от поверхности изменяем координаты с задержкой
+    switch (this.getCurrentLocation()) {
+      case 'песок':
+        setTimeout(() => {
+          this.coordinates = future_coordinates;
+        }, 5000);
+        break;
+      case 'кислотная поверхность':
+        setTimeout(() => {
+          this.coordinates = future_coordinates;
+        }, 5000);
+        break;
+      case 'вода':
+        setTimeout(() => {
+          this.coordinates = future_coordinates;
+        }, 10000);
+        break;
+      default:
+        this.coordinates = future_coordinates;
+    }
   }
 
   moveForward() {
