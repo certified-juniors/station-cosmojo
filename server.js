@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
 
         // с шансом 1 к 1000 возникает критическая ошибка
         if (Math.random() < 0.001) {
-            robot.criticalError();
+            robot.initCriticalError();
             socket.emit('criticalError');
         }
 
