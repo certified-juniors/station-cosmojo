@@ -141,31 +141,27 @@ class Robot {
     if (this.mode === 'автоматический') {
       this.autoModeInterval = setInterval(() => {
         const nearLocations = this.getNearLocation(5);
-        const location = this.getCurrentLocation();
-        if (location === 'вода') {
+        const filteredLocations = nearLocations.filter(location => location.location === 'почва');
+        if (filteredLocations.length > 0) {
+          const [x, z, y] = filteredLocations[0].coordinates;
+          const [current_x, current_y, current_z] = this.coordinates;
+          if (current_x === x && current_y === y && current_z === z) {
+            return;
+          }
+          if (current_x > x) {
+            this.direction = 'запад';
+          } else if (current_x < x) {
+            this.direction = 'восток';
+          } else if (current_z > z) {
+            this.direction = 'юг';
+          } else if (current_z < z) {
+            this.direction = 'север';
+          }
           this.moveForward();
-          return;
+        } else {
+          this.moveForward();
         }
-        if (location === 'кислотная поверхность') {
-          this.moveBackward();
-          return;
-        }
-        if (nearLocations.length === 0) {
-          return;
-        }
-        const randomLocation = nearLocations[Math.floor(Math.random() * nearLocations.length)];
-        const [x, y, z] = randomLocation.coordinates;
-        if (x > this.coordinates[0]) {
-          this.direction = 'восток';
-        } else if (x < this.coordinates[0]) {
-          this.direction = 'запад';
-        } else if (y > this.coordinates[2]) {
-          this.direction = 'север';
-        } else if (y < this.coordinates[2]) {
-          this.direction = 'юг';
-        }
-        this.moveForward();
-      }, 1000);
+      }, 10000);
     } else {
       clearInterval(this.autoModeInterval);
     }
