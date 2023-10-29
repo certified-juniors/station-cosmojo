@@ -43,7 +43,6 @@ io.on('connection', (socket) => {
         }
 
         if (state.health <= 0) {
-            clearInterval(interval);
             socket.emit('died');
         }
 
