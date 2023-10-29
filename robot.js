@@ -116,6 +116,7 @@ class Robot {
 
   moveBackward() {
     this.move(this.direction, -1);
+    this.direction = { 'север': 'юг', 'юг': 'север', 'восток': 'запад', 'запад': 'восток' }[this.direction];
   }
 
   moveLeft() {
