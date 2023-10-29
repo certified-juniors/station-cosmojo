@@ -210,6 +210,9 @@ class Robot {
   }
 
   initCriticalError() {
+    if (this.criticalErrorInterval) {
+      return;
+    }
     this.criticalError = true;
     this.criticalErrorInterval = setInterval(() => {
       this.health -= 100;
