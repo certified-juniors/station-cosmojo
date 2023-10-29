@@ -237,7 +237,7 @@ class Robot {
   getState() {
     const location = this.getCurrentLocation();
     if (location === 'кислотная поверхность') {
-      this.health -= 1000;
+      this.health -= 100;
     }
     if (location === 'вода') {
       this.health -= 10;
