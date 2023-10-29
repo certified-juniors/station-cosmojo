@@ -10,7 +10,7 @@ const depth = 128;
 const thresholds = {
   air: 0.1,
   soil: 0.2,
-  acid: 0.3,
+  acid: 0.25,
   sand: 0.35,
   water: 1.0,
 };
@@ -20,7 +20,7 @@ for (let x = 0; x < width; x++) {
   for (let y = 0; y < height; y++) {
     map[x].push([])
     for (let z = 0; z < depth; z++) {
-      const noiseValue = noise.perlin3(x / 50, y / 50, z / 50);
+      const noiseValue = noise.perlin3(x / 10, y / 10, z / 10);
 
       let cellType;
       if (noiseValue < thresholds.air) {
